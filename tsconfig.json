@@ -33,6 +33,7 @@
     "baseUrl": "./",
     "paths": {
       "@config/*": [ "./src/config/*" ],
+      "@chat/*": [ "./src/chat/*" ],
       "@env": [ "./src/config/environment" ],
       "@types": [ "./src/types" ],
       "@src/*": [ "./src/*" ]

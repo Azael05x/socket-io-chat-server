@@ -1,7 +1,9 @@
 import Express from 'express';
 import Http from 'http';
+import SocketIO from 'socket.io';
 
 import Environment from '@config/environment';
+import { ChatSocket } from '@chat/chat.socket';
 
 /**
  * Event listener for HTTP server "error" event.
@@ -47,9 +49,13 @@ const onListening = () => {
 
 const app = Express();
 const server = Http.createServer(app);
+const io = SocketIO(server);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(Environment.server.port, onListening);
 server.on('error', onError);
+
+new ChatSocket(io).start();
+
