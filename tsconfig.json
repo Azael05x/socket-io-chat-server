@@ -1,0 +1,44 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "bin/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "sourceMap": true,
+    "mapRoot": "./",
+
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016",
+      "es2017",
+      "es6"
+    ],
+
+    "outDir": "./dist",
+    "charset": "UTF-8",
+
+    "allowJs": true,
+    "checkJs": false,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": [ "./src/config/*" ],
+      "@env": [ "./src/config/environment" ],
+      "@types": [ "./src/types" ],
+      "@src/*": [ "./src/*" ]
+    },
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  }
+}
