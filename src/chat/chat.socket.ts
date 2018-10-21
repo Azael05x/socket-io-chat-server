@@ -1,10 +1,7 @@
-import { Socket, Server } from "socket.io";
+import { Server, Socket } from 'socket.io';
 
-import { ChatRoom } from "@chat/chat.room";
-import {
-  EVENT_JOIN, EVENT_RECEIVE_MESSAGE, EVENT_LEAVE
-} from "@config/consts";
-
+import { ChatRoom } from '@chat/chat.room';
+import { EVENT_JOIN, EVENT_LEAVE, EVENT_RECEIVE_MESSAGE } from '@config/consts';
 
 export class ChatSocket {
   private io: Server;
@@ -20,17 +17,12 @@ export class ChatSocket {
   }
 
   public onConnection(socket: Socket) {
-    socket.on('disconnect', () => {
-      console.log(`Socket#${socket.id}: disconnected`);
-      this.chatRoom.disconnected(socket.id);
-    });
-    socket.on('error', (error) => {
-      console.log(`Socket#${socket.id}: error`, error);
-    });
+    socket.on('disconnect', () => this.chatRoom.disconnected(socket.id));
+    socket.on('error', (error) => console.log(`Socket#${socket.id}: error`, error));
 
-    socket.on(EVENT_JOIN, (nickname) => this.chatRoom.addUser(nickname.toString(), socket));
+    socket.on(EVENT_JOIN, (nickname) => this.chatRoom.addUser(`${nickname}`, socket));
     socket.on(EVENT_LEAVE, () => this.chatRoom.disconnected(socket.id));
-    socket.on(EVENT_RECEIVE_MESSAGE, (message) => this.chatRoom.receiveMessage(message.toString(), socket.id));
+    socket.on(EVENT_RECEIVE_MESSAGE, (message) => this.chatRoom.message(`${message}`, socket));
 
     console.log(`Socket#${socket.id}: connected`);
   }
