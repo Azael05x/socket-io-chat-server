@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 
 import { RoomUser, RoomMessage, RoomAnnouncment } from "@types";
-import { NICKNAME_TAKEN, EVENT_EMIT_MESSAGE, EVENT_JOIN_FAIL, EVENT_JOIN_SUCCESSFUL, BROADCAST_JOINED_MESSAGE, BROADCAST_DISCONNECTED_MESSAGE, BROADCAST_KICK_MESSAGE, KICK_SILENT_MS, EVENT_KICK } from "@config/consts";
+import { NICKNAME_TAKEN, EVENT_EMIT_MESSAGE, EVENT_JOIN_FAIL, EVENT_JOIN_SUCCESSFUL, BROADCAST_JOINED_MESSAGE, BROADCAST_DISCONNECTED_MESSAGE, BROADCAST_KICK_MESSAGE, KICK_SILENT_MS, EVENT_KICK, DISCONNECTED_MESSAGE } from "@config/consts";
 
 type BroadcastDataToUsers = string[] | RoomMessage | RoomAnnouncment;
 
@@ -104,7 +104,7 @@ export class ChatRoom {
         timestamp: +new Date(),
         isAnnouncment: true
       });
-      roomUser.socket.emit(EVENT_KICK);
+      roomUser.socket.emit(EVENT_KICK, DISCONNECTED_MESSAGE);
       this.clearRoomUser(roomUser);
     }
   }
