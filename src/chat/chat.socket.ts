@@ -1,6 +1,9 @@
 import { Socket, Server } from "socket.io";
 
 import { ChatRoom } from "@chat/chat.room";
+import {
+  EVENT_JOIN, EVENT_RECEIVE_MESSAGE, EVENT_LEAVE
+} from "@config/consts";
 
 
 export class ChatSocket {
@@ -13,20 +16,23 @@ export class ChatSocket {
   }
 
   public start() {
-    this.io.on('connection', this.onConnection);
+    this.io.on('connection', this.onConnection.bind(this));
   }
 
-  public onConnection(client: Socket) {
-    console.log(`Client connected ${client.id}`);
+  public onConnection(socket: Socket) {
+    socket.on('disconnect', () => {
+      console.log(`Socket#${socket.id}: disconnected`);
+      this.chatRoom.disconnected(socket.id);
+    });
+    socket.on('error', (error) => {
+      console.log(`Socket#${socket.id}: error`, error);
+    });
 
-    client.on('disconnect', () => {
-      console.log(`Client disconnected ${client.id}`);
-      // TODO: handleDisconnect
-    })
+    socket.on(EVENT_JOIN, (nickname) => this.chatRoom.addUser(nickname.toString(), socket));
+    socket.on(EVENT_LEAVE, () => this.chatRoom.disconnected(socket.id));
+    socket.on(EVENT_RECEIVE_MESSAGE, (message) => this.chatRoom.receiveMessage(message.toString(), socket.id));
 
-    client.on('error', (err) => {
-      console.log(`Received error from client ${client.id}`);
-      console.log(err);
-    })
+    console.log(`Socket#${socket.id}: connected`);
+  }
   }
 }
