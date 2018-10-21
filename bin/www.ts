@@ -57,5 +57,12 @@ const io = SocketIO(server);
 server.listen(Environment.server.port, onListening);
 server.on('error', onError);
 
-new ChatSocket(io).start();
+const chatSocket = new ChatSocket(io);
+const onProcessExit = (_signal: string) => {
+  chatSocket.stop();
+  process.exit(0);
+}
+process.on('SIGINT', onProcessExit);
+process.on('SIGTERM', onProcessExit);
 
+chatSocket.start();

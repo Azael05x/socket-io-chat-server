@@ -12,6 +12,14 @@ export class ChatRoom {
     this.users = new Map();
   }
 
+  stop() {
+    this.users.forEach(user => {
+      this.clearRoomUser(user);
+      user.socket.disconnect(true)
+    });
+    this.users.clear();
+  }
+
   public addUser(nickname: string, socket: Socket) {
     if (this.hasNickname(nickname) || this.users.has(socket.id)) {
       socket.emit(EVENT_JOIN_FAIL, NICKNAME_TAKEN);

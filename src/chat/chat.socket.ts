@@ -34,5 +34,9 @@ export class ChatSocket {
 
     console.log(`Socket#${socket.id}: connected`);
   }
+
+  public stop() {
+    this.chatRoom.stop();
+    this.io.close();
   }
 }
