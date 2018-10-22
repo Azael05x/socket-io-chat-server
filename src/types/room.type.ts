@@ -18,3 +18,7 @@ export interface RoomAnnouncment {
   timestamp: number;
   isAnnouncment: true;
 }
+
+export interface RoomJoinResponse {
+  nickname: string;
+}
