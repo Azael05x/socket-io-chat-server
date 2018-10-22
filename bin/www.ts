@@ -1,6 +1,7 @@
 import Express from 'express';
 import Http from 'http';
 import SocketIO from 'socket.io';
+import Path from 'path';
 
 import Environment from '@config/environment';
 import { ChatSocket } from '@chat/chat.socket';
@@ -14,6 +15,12 @@ const server = Http.createServer(app);
 const io = SocketIO(server);
 
 app.set('port', process.env.PORT || Environment.server.port);
+// For heroku:
+if (Environment.env === 'production') {
+  app
+    .use(Express.static(Path.join(__dirname + "/../../client")))
+    .get('*', (req, res) => res.sendFile(Path.join(__dirname + "/../../client/index.html")));
+}
 
 /**
  * Event listener for HTTP server "error" event.

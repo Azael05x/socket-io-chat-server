@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_FILES=true NODE_ENV=development ./node_modules/.bin/ts-node -r tsconfig-paths/register bin/www.ts ",
+    "postinstall": "tsc && cp tsconfig.json dist/tsconfig.json",
+    "start": "cd dist && NODE_ENV=production node -r tsconfig-paths/register bin/www.js",
+    "dev": "TS_NODE_FILES=true NODE_ENV=development ./node_modules/.bin/ts-node -r tsconfig-paths/register bin/www.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
