@@ -6,6 +6,16 @@ import Environment from '@config/environment';
 import { ChatSocket } from '@chat/chat.socket';
 
 /**
+ * Create HTTP server and socket.io.
+ */
+
+const app = Express();
+const server = Http.createServer(app);
+const io = SocketIO(server);
+
+app.set('port', process.env.PORT || Environment.server.port);
+
+/**
  * Event listener for HTTP server "error" event.
  */
 const onError = (error) => {
@@ -43,18 +53,11 @@ const onListening = () => {
   console.log('Listening on ' + bind);
 }
 
-/**
- * Create HTTP server and socket.io.
- */
-
-const app = Express();
-const server = Http.createServer(app);
-const io = SocketIO(server);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(Environment.server.port, onListening);
+server.listen(app.get('port'), onListening);
 server.on('error', onError);
 
 const chatSocket = new ChatSocket(io);
